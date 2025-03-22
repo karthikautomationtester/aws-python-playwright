@@ -1,0 +1,32 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.12
+    commands:
+      - pip install pipenv
+      - echo install dependencies
+      - pip install -r requirements.txt
+      - python -m playwright install
+
+  pre_build:
+    commands:
+      - pipenv run playwright install
+
+  build:
+    commands:
+      - echo running tests
+      - pytest --html=reports/index.html
+
+
+artifacts:
+  files:
+    - 'reports/**/*'
+  discard-paths: yes
+
+reports:
+  pytest_reports:
+    files:
+      - '**/test-reports/*.xml'
+    discard-paths: yes
